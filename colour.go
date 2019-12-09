@@ -6,10 +6,10 @@ import (
 )
 
 const (
-	infoColour  = "%c[1;40;34m%s%c[0m"
+	errorColour = "%c[1;40;31m%s%c[0m"
 	debugColour = "%c[1;40;32m%s%c[0m"
 	warnColour  = "%c[1;40;33m%s%c[0m"
-	errorColour = "%c[1;40;31m%s%c[0m"
+	infoColour  = "%c[1;40;34m%s%c[0m"
 )
 
 func parseOutput(output string) string {
