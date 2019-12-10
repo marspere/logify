@@ -2,7 +2,6 @@ package logify
 
 import (
 	"fmt"
-	"log"
 	"strings"
 	"syscall"
 )
@@ -37,9 +36,15 @@ func callWindowsPrint(output, level string, colour int) {
 	proc := kernel32.NewProc("SetConsoleTextAttribute")
 	handle, _, _ := proc.Call(uintptr(syscall.Stdout), uintptr(colour))
 	fmt.Print(level)
-	handle, _, _ = proc.Call(uintptr(syscall.Stdout), uintptr(7))
-	CloseHandle := kernel32.NewProc("CloseHandle")
-	_, _, err := CloseHandle.Call(handle)
-	log.Println("callWindowsPrint error:", err)
+	handle, _, err := proc.Call(uintptr(syscall.Stdout), uintptr(7))
+	if err != nil {
+		fmt.Print(str[1] + "\n")
+		return
+	}
+	_, _, err = kernel32.NewProc("CloseHandle").Call(handle)
+	if err != nil {
+		fmt.Print(str[1] + "\n")
+		return
+	}
 	fmt.Print(str[1] + "\n")
 }
