@@ -13,6 +13,7 @@ type Logs struct {
 	Level            int    // log level, above level will be exported to file
 	EnableCallerSkip bool   // whether to enable print function call stack ascend
 	CallerSkipDepth  int    // the depth of ascend
+	EnableToFile     bool   // whether print to file
 }
 
 const (
