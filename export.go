@@ -2,7 +2,6 @@ package logify
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"runtime"
 	"sync"
@@ -67,12 +66,11 @@ func syncLogToFile(content string) {
 	f, err := os.OpenFile(time.Now().Format("2006-01-02")+".log", os.O_CREATE|os.O_APPEND, 0x666)
 	defer f.Close()
 	if err != nil {
-		log.Println(err)
+		fmt.Println(baseLog.defaultFormatLog(errorFormat, err, baseLog.CallerSkipDepth))
 		return
 	}
-	_, err = fmt.Fprintln(f, content)
-	if err != nil {
-		log.Println(err)
+	if _, err = fmt.Fprintln(f, content); err != nil {
+		fmt.Println(baseLog.defaultFormatLog(errorFormat, err, baseLog.CallerSkipDepth))
 		return
 	}
 	mu.Unlock()
