@@ -14,14 +14,17 @@ type Logs struct {
 	EnableCallerSkip bool   // whether to enable print function call stack ascend
 	CallerSkipDepth  int    // the depth of ascend
 	EnableToFile     bool   // whether print to file
+	MaxSaveDays      int    // the maximum days of saving log
+	Location         string // where the log files are saved
 }
 
 const (
-	infoFormat        = "%s [INFO] [%s] %v"
-	debugFormat       = "%s [DEBUG] [%s] %v"
-	warnFormat        = "%s [WARN] [%s] %v"
-	errorFormat       = "%s [ERROR] [%s] %v"
-	defaultTimeFormat = "2006-01-02 15:04:05"
+	infoFormat         = "%s [INFO] [%s] %v"
+	debugFormat        = "%s [DEBUG] [%s] %v"
+	warnFormat         = "%s [WARN] [%s] %v"
+	errorFormat        = "%s [ERROR] [%s] %v"
+	defaultTimeFormat  = "2006-01-02 15:04:05"
+	defaultMaxSaveDays = 7
 )
 
 var baseLog = newLogs()
@@ -30,6 +33,7 @@ func newLogs() *Logs {
 	return &Logs{
 		EnableCallerSkip: true,
 		CallerSkipDepth:  2,
+		MaxSaveDays:      defaultMaxSaveDays,
 	}
 }
 
