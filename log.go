@@ -58,3 +58,7 @@ func parseFormat(format string) string {
 	str := strings.Split(format, " ")
 	return str[0] + " " + str[1] + " " + str[3]
 }
+
+func SetLogCallDepth(n int) {
+	baseLog.CallerSkipDepth = n
+}
