@@ -15,23 +15,23 @@ func init() {
 }
 
 // Debug log DEBUG level message.
-func Debug(v interface{}) {
-	outputLog(baseLog.defaultFormatLog(debugFormat, v, baseLog.CallerSkipDepth))
+func Debug(v ...interface{}) {
+	outputLog(baseLog.defaultFormatLog(debugFormat, baseLog.CallerSkipDepth, v...))
 }
 
 // Warn log WARN level message.
-func Warn(v interface{}) {
-	outputLog(baseLog.defaultFormatLog(warnFormat, v, baseLog.CallerSkipDepth))
+func Warn(v ...interface{}) {
+	outputLog(baseLog.defaultFormatLog(warnFormat, baseLog.CallerSkipDepth, v...))
 }
 
 // Info log INFO level message.
-func Info(v interface{}) {
-	outputLog(baseLog.defaultFormatLog(infoFormat, v, baseLog.CallerSkipDepth))
+func Info(v ...interface{}) {
+	outputLog(baseLog.defaultFormatLog(infoFormat, baseLog.CallerSkipDepth, v...))
 }
 
 // Error log ERROR level message.
-func Error(v interface{}) {
-	outputLog(baseLog.defaultFormatLog(errorFormat, v, baseLog.CallerSkipDepth))
+func Error(v ...interface{}) {
+	outputLog(baseLog.defaultFormatLog(errorFormat, baseLog.CallerSkipDepth, v...))
 }
 
 func outputLog(content string) {

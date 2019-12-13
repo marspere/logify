@@ -15,9 +15,9 @@ func init() {
 			if baseLog.EnableToFile {
 				err := os.Remove(baseLog.Location + time.Now().AddDate(0, 0, -baseLog.MaxSaveDays).Format("2006-01-02") + ".log")
 				if err != nil && err.Error() != "The system cannot find the file specified." {
-					fmt.Println(baseLog.defaultFormatLog(errorFormat, err, baseLog.CallerSkipDepth))
+					fmt.Println(baseLog.defaultFormatLog(errorFormat, baseLog.CallerSkipDepth, err))
 				}
-				fmt.Println(baseLog.defaultFormatLog(debugFormat, strconv.FormatInt(t.Unix(), 10)+":delete log", baseLog.CallerSkipDepth))
+				fmt.Println(baseLog.defaultFormatLog(debugFormat, baseLog.CallerSkipDepth, strconv.FormatInt(t.Unix(), 10)+":delete log"))
 			}
 		}
 	}()
@@ -55,11 +55,11 @@ func syncLogToFile(content string) {
 	f, err := os.OpenFile(baseLog.Location+time.Now().Format("2006-01-02")+".log", os.O_CREATE|os.O_APPEND, 0x666)
 	defer f.Close()
 	if err != nil {
-		fmt.Println(baseLog.defaultFormatLog(errorFormat, err, baseLog.CallerSkipDepth))
+		fmt.Println(baseLog.defaultFormatLog(errorFormat, baseLog.CallerSkipDepth, err))
 		return
 	}
 	if _, err = fmt.Fprintln(f, content); err != nil {
-		fmt.Println(baseLog.defaultFormatLog(errorFormat, err, baseLog.CallerSkipDepth))
+		fmt.Println(baseLog.defaultFormatLog(errorFormat, baseLog.CallerSkipDepth, err))
 		return
 	}
 	mu.Unlock()

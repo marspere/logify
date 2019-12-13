@@ -19,10 +19,10 @@ type Logs struct {
 }
 
 const (
-	infoFormat         = "%s [INFO] [%s] %v"
-	debugFormat        = "%s [DEBUG] [%s] %v"
-	warnFormat         = "%s [WARN] [%s] %v"
-	errorFormat        = "%s [ERROR] [%s] %v"
+	infoFormat         = "%s [INFO] [%s]"
+	debugFormat        = "%s [DEBUG] [%s]"
+	warnFormat         = "%s [WARN] [%s]"
+	errorFormat        = "%s [ERROR] [%s]"
 	defaultTimeFormat  = "2006-01-02 15:04:05"
 	defaultMaxSaveDays = 7
 )
@@ -37,11 +37,14 @@ func newLogs() *Logs {
 	}
 }
 
-func (l *Logs) defaultFormatLog(format string, v interface{}, skip int) string {
+func (l *Logs) defaultFormatLog(format string, skip int, v ...interface{}) string {
 	_, file, line, ok := runtime.Caller(skip)
+	v1 := make([]interface{}, 0)
+	v1 = append(v1, time.Now().Format(defaultTimeFormat))
 	if ok {
-		location := parseFilename(file) + ":" + strconv.FormatInt(int64(line), 10)
-		return fmt.Sprintf(format, time.Now().Format(defaultTimeFormat), location, v)
+		v1 = append(v1, parseFilename(file) + ":" + strconv.FormatInt(int64(line), 10))
+		v1 = append(v1, v...)
+		return fmt.Sprintf(assembleFormat(format, v...), v1...)
 	}
 	return fmt.Sprintf(parseFormat(format), time.Now().Format(defaultTimeFormat), v)
 }
@@ -57,6 +60,13 @@ func parseFilename(filename string) string {
 func parseFormat(format string) string {
 	str := strings.Split(format, " ")
 	return str[0] + " " + str[1] + " " + str[3]
+}
+
+func assembleFormat(format string, v ...interface{}) string {
+	for i := 0; i < len(v); i++ {
+		format = format + " " + "%v"
+	}
+	return format
 }
 
 func SetLogCallDepth(n int) {
