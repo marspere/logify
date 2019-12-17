@@ -42,11 +42,10 @@ func (l *Logs) defaultFormatLog(format string, skip int, v ...interface{}) strin
 	v1 := make([]interface{}, 0)
 	v1 = append(v1, time.Now().Format(defaultTimeFormat))
 	if ok {
-		v1 = append(v1, parseFilename(file) + ":" + strconv.FormatInt(int64(line), 10))
-		v1 = append(v1, v...)
-		return fmt.Sprintf(assembleFormat(format, v...), v1...)
+		v1 = append(v1, parseFilename(file)+":"+strconv.FormatInt(int64(line), 10))
 	}
-	return fmt.Sprintf(parseFormat(format), time.Now().Format(defaultTimeFormat), v)
+	v1 = append(v1, v...)
+	return fmt.Sprintf(assembleFormat(format, ok, v...), v1...)
 }
 
 func parseFilename(filename string) string {
@@ -57,12 +56,10 @@ func parseFilename(filename string) string {
 	return str[0]
 }
 
-func parseFormat(format string) string {
-	str := strings.Split(format, " ")
-	return str[0] + " " + str[1] + " " + str[3]
-}
-
-func assembleFormat(format string, v ...interface{}) string {
+func assembleFormat(format string, ok bool, v ...interface{}) string {
+	if !ok {
+		format = strings.TrimSuffix(format, " [%s]")
+	}
 	for i := 0; i < len(v); i++ {
 		format = format + " " + "%v"
 	}
