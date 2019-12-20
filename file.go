@@ -52,7 +52,7 @@ func SetLogLocation(loc string) {
 
 func syncLogToFile(content string) {
 	mu.Lock()
-	f, err := os.OpenFile(baseLog.Location+time.Now().Format("2006-01-02")+".log", os.O_CREATE|os.O_APPEND, 0x666)
+	f, err := os.OpenFile(baseLog.Location+time.Now().Format("2006-01-02")+".log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, os.ModeAppend)
 	defer f.Close()
 	if err != nil {
 		fmt.Println(baseLog.defaultFormatLog(errorFormat, baseLog.CallerSkipDepth, err))

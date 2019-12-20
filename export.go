@@ -45,6 +45,7 @@ func outputLog(content string) {
 		}
 		fmt.Println(parseOutput(content))
 		go syncLogToFile(content)
+		wg.Wait()
 		return
 	}
 	if curGOOS == "windows" {
