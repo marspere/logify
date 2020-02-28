@@ -5,6 +5,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -50,8 +51,10 @@ func SetLogLocation(loc string) {
 	baseLog.Location = loc
 }
 
-func syncLogToFile(content string) {
+func syncLogToFile(content string, wg *sync.WaitGroup) {
 	mu.Lock()
+	defer mu.Unlock()
+	defer wg.Done()
 	f, err := os.OpenFile(baseLog.Location+time.Now().Format("2006-01-02")+".log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, os.ModeAppend)
 	defer f.Close()
 	if err != nil {
@@ -62,6 +65,5 @@ func syncLogToFile(content string) {
 		fmt.Println(baseLog.defaultFormatLog(errorFormat, baseLog.CallerSkipDepth, err))
 		return
 	}
-	mu.Unlock()
 	return
 }

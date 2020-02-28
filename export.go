@@ -37,15 +37,14 @@ func Error(v ...interface{}) {
 func outputLog(content string) {
 	if baseLog.EnableToFile {
 		wg.Add(1)
-		defer wg.Done()
 		if curGOOS == "windows" {
-			go syncLogToFile(content)
+			go syncLogToFile(content, &wg)
 			parsePrint(content)
 			wg.Wait()
 			return
 		}
 		fmt.Println(parseOutput(content))
-		go syncLogToFile(content)
+		go syncLogToFile(content, &wg)
 		wg.Wait()
 		return
 	}
