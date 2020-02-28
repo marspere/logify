@@ -63,6 +63,5 @@ func syncLogToFile(content string) {
 		return
 	}
 	mu.Unlock()
-	wg.Done()
 	return
 }
